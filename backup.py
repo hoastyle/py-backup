@@ -21,14 +21,19 @@ import os
 # Note: python的格式？
 source_list = ['/Users/Eric/Workspace/my_project/python/backup/source/a.c', '/Users/Eric/Workspace/my_project/python/backup/source/b.c', '/Users/Eric/Workspace/my_project/python/backup/source/c.c']
 
+comment = raw_input('Enter comment: ')
+
+
 date = time.strftime('%Y.%m.%d')
 time = time.strftime('%H:%M:%S')
 
 dest_dir = '/Users/Eric/Workspace/my_project/python/backup/dest'
-target_dir = dest_dir + '/' + date
+# os.sep: 目录分隔符 增加跨平台性
+target_dir = dest_dir + os.sep + date
 
+file_name = time + '_' + comment.replace(' ', '_')
 file_fmt = 'zip'
-file_en = time + '.' + file_fmt
+file_en = file_name + '.' + file_fmt
 
 if not os.path.exists(dest_dir):
 	os.mkdir(dest_dir)
