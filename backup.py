@@ -5,6 +5,7 @@
 
 import subprocess
 import time
+import os
 
 '''
 * 1 源：需要备份的文件
@@ -20,23 +21,27 @@ import time
 # Note: python的格式？
 source_list = ['/Users/Eric/Workspace/my_project/python/backup/source/a.c', '/Users/Eric/Workspace/my_project/python/backup/source/b.c', '/Users/Eric/Workspace/my_project/python/backup/source/c.c']
 
+date = time.strftime('%Y.%m.%d')
+time = time.strftime('%H:%M:%S')
+
 dest_dir = '/Users/Eric/Workspace/my_project/python/backup/dest'
-file_name = time.strftime('%Y.%m.%d-%H:%M:%S')
+target_dir = dest_dir + '/' + date
+
 file_fmt = 'zip'
-file_en = file_name + '.' + file_fmt
+file_en = time + '.' + file_fmt
 
-print file_name
-print file_fmt
-print file_en
+if not os.path.exists(dest_dir):
+	os.mkdir(dest_dir)
 
-package_command = "zip -r %s %s" % (file_en, ' '.join(source_list))
-print package_command
-move_command = "mv %s %s" % (file_en, dest_dir + '/')
-print move_command
+if not os.path.exists(target_dir):
+	os.mkdir(target_dir)
 
-if subprocess.call(package_command, shell=True) == 0:
-	if subprocess.call(move_command, shell=True) == 0:
-		print 'Successful backup to', dest_dir + '/' + file_en
+pk_cmd = "zip -r %s %s" % (file_en, ' '.join(source_list))
+mv_cmd = "mv %s %s" % (file_en, target_dir + '/')
+
+if subprocess.call(pk_cmd, shell=True) == 0:
+	if subprocess.call(mv_cmd, shell=True) == 0:
+		print 'Successful backup to', target_dir + '/' + file_en
 	else:
 		print 'Failed to move'
 else:
