@@ -23,7 +23,6 @@ source_list = ['/Users/Eric/Workspace/my_project/python/backup/source/a.c', '/Us
 
 comment = raw_input('Enter comment: ')
 
-
 date = time.strftime('%Y.%m.%d')
 time = time.strftime('%H:%M:%S')
 
@@ -31,7 +30,11 @@ dest_dir = '/Users/Eric/Workspace/my_project/python/backup/dest'
 # os.sep: 目录分隔符 增加跨平台性
 target_dir = dest_dir + os.sep + date
 
-file_name = time + '_' + comment.replace(' ', '_')
+if len(comment) == 0:
+	file_name = time
+else
+	file_name = time + '_' + comment.replace(' ', '_')
+
 file_fmt = 'zip'
 file_en = file_name + '.' + file_fmt
 
