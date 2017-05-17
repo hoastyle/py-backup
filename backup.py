@@ -6,6 +6,7 @@
 import subprocess
 import time
 import os
+import getopt
 
 '''
 * 1 源：需要备份的文件
@@ -32,7 +33,7 @@ target_dir = dest_dir + os.sep + date
 
 if len(comment) == 0:
 	file_name = time
-else
+else:
 	file_name = time + '_' + comment.replace(' ', '_')
 
 file_fmt = 'zip'
