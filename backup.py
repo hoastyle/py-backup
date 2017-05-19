@@ -20,7 +20,8 @@ opts,args = getopt.getopt(sys.argv[1:], 'ht:', ['help', 'type='])
 for opt,arg in opts:
 	if opt in ('-h', '--help'):
 		print 'Please input backup.py -h -t zip or tar.gz'
-	if opt in ('-t', '--type'):
+		sys.exit()
+	elif opt in ('-t', '--type'):
 		file_fmt = arg
 
 # version 1: 某些特定文件
@@ -29,7 +30,7 @@ for opt,arg in opts:
 # Note: python的格式？
 src_dir = '/Users/Eric/Workspace/my_project/python/backup/source/'
 dest_dir = '/Users/Eric/Workspace/my_project/python/backup/dest'
-source_list = [src_dir + 'a.c', src_dir + 'b.c', src_dir + 'c.c']
+src_list = [src_dir + 'a.c', src_dir + 'b.c', src_dir + 'c.c']
 
 comment = raw_input('Enter comment: ')
 
@@ -53,9 +54,9 @@ if not os.path.exists(target_dir):
 	os.mkdir(target_dir)
 
 if file_fmt == 'zip':
-	pk_cmd = "zip -r %s %s" % (file_en, ' '.join(source_list))
+	pk_cmd = "zip -r %s %s" % (file_en, ' '.join(src_list))
 elif file_fmt == 'tar.gz':
-	pk_cmd = "tar -czvf %s %s" % (file_en, ' '.join(source_list))
+	pk_cmd = "tar -czvf %s %s" % (file_en, ' '.join(src_list))
 
 mv_cmd = "mv %s %s" % (file_en, target_dir + '/')
 
