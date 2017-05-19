@@ -6,7 +6,7 @@
 import subprocess
 import time
 import os
-import getopt
+import sys,getopt
 
 '''
 * 1 源：需要备份的文件
@@ -16,18 +16,26 @@ import getopt
 * 5 转移
 '''
 
+opts,args = getopt.getopt(sys.argv[1:], 'ht:', ['help', 'type='])
+for opt,arg in opts:
+	if opt in ('-h', '--help'):
+		print 'Please input backup.py -h -t zip or tar.gz'
+	if opt in ('-t', '--type'):
+		file_fmt = arg
+
 # version 1: 某些特定文件
 # version 2: 某种类型文件
 # version 3: 自动扫描目录下的文件
 # Note: python的格式？
-source_list = ['/Users/Eric/Workspace/my_project/python/backup/source/a.c', '/Users/Eric/Workspace/my_project/python/backup/source/b.c', '/Users/Eric/Workspace/my_project/python/backup/source/c.c']
+src_dir = '/Users/Eric/Workspace/my_project/python/backup/source/'
+dest_dir = '/Users/Eric/Workspace/my_project/python/backup/dest'
+source_list = [src_dir + 'a.c', src_dir + 'b.c', src_dir + 'c.c']
 
 comment = raw_input('Enter comment: ')
 
 date = time.strftime('%Y.%m.%d')
 time = time.strftime('%H:%M:%S')
 
-dest_dir = '/Users/Eric/Workspace/my_project/python/backup/dest'
 # os.sep: 目录分隔符 增加跨平台性
 target_dir = dest_dir + os.sep + date
 
@@ -36,7 +44,6 @@ if len(comment) == 0:
 else:
 	file_name = time + '_' + comment.replace(' ', '_')
 
-file_fmt = 'zip'
 file_en = file_name + '.' + file_fmt
 
 if not os.path.exists(dest_dir):
@@ -45,7 +52,11 @@ if not os.path.exists(dest_dir):
 if not os.path.exists(target_dir):
 	os.mkdir(target_dir)
 
-pk_cmd = "zip -r %s %s" % (file_en, ' '.join(source_list))
+if file_fmt == 'zip':
+	pk_cmd = "zip -r %s %s" % (file_en, ' '.join(source_list))
+elif file_fmt == 'tar.gz':
+	pk_cmd = "tar -czvf %s %s" % (file_en, ' '.join(source_list))
+
 mv_cmd = "mv %s %s" % (file_en, target_dir + '/')
 
 if subprocess.call(pk_cmd, shell=True) == 0:
